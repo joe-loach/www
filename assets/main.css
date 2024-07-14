@@ -1,6 +1,6 @@
 body {
   margin: 15px auto;
-  max-width: 800px;
+  max-width: 600px;
   line-height: 1.6;
   font-size: 15px;
   padding: 0 10px;
@@ -49,6 +49,14 @@ h3 {
 footer {
   text-align: center;
   font-size: 12px;
+}
+
+li {
+  margin-top: 1em;
+}
+
+.central {
+  text-align: center;
 }
 
 /* Raise text size on small screens */

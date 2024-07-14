@@ -46,6 +46,34 @@ h3 {
   line-height: 1.2;
 }
 
+.about-container {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+}
+
+.about-container img {
+  float: left;
+}
+
+.about-container p {
+  padding-left: 20px;
+  float: left;
+}
+
+.about-photo {
+  margin: 0;
+  margin-right: 12px;
+  min-width: 200px;
+  max-height: 200px;
+  overflow: hidden;
+}
+
+.about-photo img {
+  width: 300px;
+  margin: -70px 0 0 -40px;
+}
+
 footer {
   text-align: center;
   font-size: 12px;

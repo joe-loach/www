@@ -79,6 +79,8 @@ footer {
   font-size: 12px;
 }
 
+ul { list-style-type: "* "; }
+
 li {
   margin-top: 1em;
 }

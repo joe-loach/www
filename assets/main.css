@@ -36,7 +36,7 @@ nav {
   }
 }
 
-h1 {
+h1.title {
   text-align: center;
 }
 
@@ -74,19 +74,47 @@ h3 {
   margin: -70px 0 0 -40px;
 }
 
+header > nav > a {
+  text-decoration: none;
+}
+
 footer {
   text-align: center;
   font-size: 12px;
 }
 
-ul { list-style-type: "* "; }
+ul {
+  list-style-type: "+ ";
+  padding-left: 20px;
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
 
 li {
-  margin-top: 1em;
+  margin-top: 0.25em;
 }
 
 .central {
   text-align: center;
+}
+
+a.button {
+  display: block;
+  padding: 1px 6px;
+  border: 4px solid buttonface;
+  color: buttonface;
+  text-decoration: none;
+}
+
+a.button:hover {
+  background-color: buttonface;
+  color: black;
+}
+
+div > .header {
+  display: flex;
+  justify-content: space-between;
+  margin: 0em;
 }
 
 /* Raise text size on small screens */
@@ -118,5 +146,9 @@ li {
   .no-print, .no-print *
   {
     display: none !important;
+  }
+  a {
+    text-decoration: none;
+    color: #000
   }
 }

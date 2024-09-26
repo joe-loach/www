@@ -151,4 +151,11 @@ div > .header {
     text-decoration: none;
     color: #000
   }
+
+  /* remove added header and footer */
+  @page
+  {
+    size: auto;
+    margin: 0mm;
+  }
 }

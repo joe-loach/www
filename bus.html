@@ -77,6 +77,8 @@
     </style>
 
     <script>
+        import 'https://tomashubelbauer.github.io/github-pages-local-storage/index.js';
+
         function init() {
             setCounter(getCounter())
             stats();
@@ -87,13 +89,13 @@
                 document.getElementById("error").innerHTML = "Browser doesn't support localstorage";
                 return 0;
             }
-            return Number(localStorage.clickcount);
+            return Number(localStorage.getItem("clickcount"));
         }
 
         function setCounter(value) {
             if (typeof(Storage) !== "undefined") {
                 // save the new value into local storage
-                localStorage.clickcount = Number(value);
+                localStorage.setItem("clickcount", Number(value));
             }
             document.getElementById("result").innerHTML = value;
             // recompute stats on counter change

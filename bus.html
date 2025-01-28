@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="author" content="Joe Loach">
+    <meta name="description" content="Joe Loach's personal website">
+    <link rel="canonical" href="https://joeloach.co.uk/bus">
+
+    <title>Bus Counter</title>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/assets/favicon/site.webmanifest">
+    
+    <link rel="stylesheet" type="text/css" href="/assets/main.css">
+    <script src="https://kit.fontawesome.com/c3373035a3.js" crossorigin="anonymous"></script>
+
+    <style>
+        .value {
+            display: inline-block;
+            text-align: center;
+            color: black;
+            background-color: #dddddd;
+            border: 0.5em solid #dddddd;
+            font-size: 4em;
+            border-radius: 15%;
+
+            user-select: none;
+
+            margin: 0.2em;
+        }
+
+        button {
+            text-align: center;
+            height: auto;
+            font-size: 2.5em;
+            min-width: 5rem;
+            padding: 10px;
+        }
+
+        .columns {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .rows {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .vp-center {
+            position: fixed;
+            inset: 0px;
+            max-width: 50vw;
+            max-height: 50dvh;
+            margin: auto;
+        }
+
+        .title {
+            font-size: 4em;
+            margin-top: 0;
+            margin-bottom: 0.2em;
+        }
+
+        .stats * {
+            margin: 0.1em;
+        }
+
+        .stat-num {
+            font-size: 1.4em;
+        }
+    </style>
+
+    <script>
+        function init() {
+            setCounter(getCounter())
+            stats();
+        }
+        
+        function getCounter() {
+            if (typeof(Storage) === "undefined") {
+                document.getElementById("error").innerHTML = "Browser doesn't support localstorage";
+                return 0;
+            }
+            return Number(localStorage.clickcount);
+        }
+
+        function setCounter(value) {
+            if (typeof(Storage) !== "undefined") {
+                // save the new value into local storage
+                localStorage.clickcount = Number(value);
+            }
+            document.getElementById("result").innerHTML = value;
+            // recompute stats on counter change
+            stats();
+        }
+
+        function incCounter() {
+            let counter = getCounter();
+            counter += 1;
+            setCounter(counter);
+        }
+
+        function decCounter() {
+            let counter = getCounter();
+            if (counter > 0) {
+                counter -= 1;
+                setCounter(counter);
+            }
+        }
+
+        function resetCounter() {
+            setCounter(0);
+        }
+
+        function rgb(color){
+            return "rgb("+color.r+","+color.g+","+color.b+")";
+        }
+
+        function lerpRGB(color1, color2, t) {
+            let color = {};
+            color.r = color1.r + ((color2.r - color1.r) * t);
+            color.g = color1.g + ((color2.g - color1.g) * t);
+            color.b = color1.b + ((color2.b - color1.b) * t);
+            return color;
+        }
+
+        function clamp(number, min, max) {
+            return Math.max(min, Math.min(number, max));
+        }
+
+        function stats() {
+            const STUDENT_TICKET_PRICE_POUNDS = 105;
+            const SINGLE_TICKET_PRICE_POUNDS = 2;
+            const counter = getCounter();
+
+            const per_ticket = STUDENT_TICKET_PRICE_POUNDS / (counter == 0 ? 1 : counter);
+            document.getElementById("per-ticket").innerHTML =
+                `Price per ticket: <span class="stat-num">£${per_ticket.toFixed(2)}</span>`;
+
+            const total_cost = SINGLE_TICKET_PRICE_POUNDS * counter;
+            document.getElementById("spent").innerHTML =
+                `Would have spent: <span class="stat-num">£${total_cost.toFixed(2)}</span>`;
+
+            const difference = total_cost - STUDENT_TICKET_PRICE_POUNDS;
+            const verb = (difference < 0) ? "Spent" : "Saved";
+
+            let min;
+            let max;
+            let start;
+            let end;
+            if (difference < 0) {
+                min = -STUDENT_TICKET_PRICE_POUNDS;
+                max = 0;
+                start = {r:205, g:21, b:21}; // red
+                end = {r:255, g:255, b:21}; // yellow
+            } else {
+                min = 0;
+                max = 10;
+                start = {r:255, g:255, b:21}; // yellow
+                end = {r:34, g:255, b:34}; // green
+            }
+
+            const t = (difference - min) / (max - min);
+            const color_grad = lerpRGB(start, end, clamp(t, 0, 1));
+            color = rgb(color_grad);
+
+            document.getElementById("savings").innerHTML = 
+                `${verb} an extra: <span class="stat-num" style="color: ${color}">£${Math.abs(difference).toFixed(2)}</span>`;
+        }
+    </script>
+  </head>
+  <body class="vp-center" onload="init()">
+    <div class="columns">
+        <h1 class="title">Bus Counter</h1>
+        <hr style="width:50%">
+
+        <pre class="value" id="result">0</pre>
+        <div class="rows">
+            <button style="background-color: rgb(34, 255, 34)" onclick="incCounter()" type="button">+</button>
+            <button style="background-color: rgb(205, 21, 21)" onclick="decCounter()" type="button">-</button>
+        </div>
+        <br>&nbsp;
+        <button style="background-color: blue" onclick="resetCounter()" type="button">Reset</button>
+
+        <hr style="width:50%">
+        <div class="columns stats">
+            <h2>Stats</h2>
+            <p id="per-ticket"></p>
+            <p id="spent"></p>
+            <p id="savings"></p>
+        </div>
+        <div id="error" style="color: red"></div>
+    </div>
+  </body>
+</html>

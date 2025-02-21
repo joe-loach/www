@@ -1,5 +1,5 @@
 body {
-  margin: 15px auto;
+  margin: auto;
   max-width: 600px;
   line-height: 1.6;
   font-size: 15px;
@@ -16,28 +16,41 @@ body {
     background-color: #222;
   }
 
-  a:link {
-    color: lightskyblue;
-  }
-
-  a:visited {
-    color: violet;
-  }
-
   .night-invert {
     filter: invert(88%) hue-rotate(180deg);
   }
-}
 
-nav {
-  font-size: 25px;
-  a {
-    margin-right: 15px;
+  .night-darken {
+    filter: brightness(90%);
   }
 }
 
-h1.title {
+.body-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1;
+}
+
+figure {
+  margin: 0px;
+}
+
+figcaption {
   text-align: center;
+  filter: brightness(80%);
+}
+
+#banner {
+  width: 100%;
+  aspect-ratio: 6/4;
+  background-image: url("/assets/pics/me_and_mum.jpg");
+  background-position: 0% 5%;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 h1,
@@ -46,36 +59,40 @@ h3 {
   line-height: 1.2;
 }
 
-.about-container {
+nav {
+  margin-top: 7.5px;
+  font-size: 25px;
+
+  a {
+    margin-right: 15px;
+    text-decoration: none;
+  }
+}
+
+#guitar-tooltip {
+  position: relative;
+}
+
+#guitar-tooltip a img {
+  display: none;
+  color: #FFFFFF;
+}
+
+#guitar-tooltip a:hover img {
+  display: block;
+  position: absolute;
+  border-radius: 15px;
+  left: -78.275px;
+  top: 2em;
+  padding: 0 5px;
+}
+
+.resume-container {
   display: flex;
   align-items: center;
-  justify-content: left;
-}
-
-.about-container img {
-  float: left;
-}
-
-.about-container p {
-  padding-left: 20px;
-  float: left;
-}
-
-.about-photo {
-  margin: 0;
-  margin-right: 12px;
-  min-width: 200px;
-  max-height: 200px;
-  overflow: hidden;
-}
-
-.about-photo img {
-  width: 300px;
-  margin: -70px 0 0 -40px;
-}
-
-header > nav > a {
-  text-decoration: none;
+  gap: 1em;
+  justify-content: center;
+  flex-direction: column;
 }
 
 footer {
@@ -111,10 +128,36 @@ a.button:hover {
   color: black;
 }
 
-div > .header {
-  display: flex;
-  justify-content: space-between;
-  margin: 0em;
+a#download {
+  background-color: dodgerblue;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
+a#download:hover {
+  /* make the background darker when we hover over the download button */
+  background-color: color-mix(in srgb, dodgerblue, black);
+}
+
+a:link {
+  color: dodgerblue;
+
+  @media (prefers-color-scheme: dark) {
+    color: lightskyblue;
+  }
+}
+
+a:visited {
+  /* remove the visited color */
+  color: dodgerblue;
+
+  @media (prefers-color-scheme: dark) {
+    color: lightskyblue;
+  }
 }
 
 /* Raise text size on small screens */
@@ -141,20 +184,20 @@ div > .header {
 }
 
 /* Remove certain elements when printing */
-@media print
-{
-  .no-print, .no-print *
-  {
+@media print {
+
+  .no-print,
+  .no-print * {
     display: none !important;
   }
+
   a {
     text-decoration: none;
     color: #000
   }
 
   /* remove added header and footer */
-  @page
-  {
+  @page {
     size: auto;
     margin: 0mm;
   }
